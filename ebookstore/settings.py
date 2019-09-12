@@ -25,7 +25,7 @@ SECRET_KEY = '_a)rt7uixak@6g0kd+@$+fl9jsv92uyiry(@7!tfo26%i%f%_y'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-AUTH_USER_MODEL = 'apps.sers'
+AUTH_USER_MODEL = 'users.User'
 # Application definition
 
 DJANGO_APPS = [
