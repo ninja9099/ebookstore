@@ -48,6 +48,9 @@ class Book(BaseModel):
         # to order with alphabetically
         order_with_respect_to = 'name'
 
+    def __str__(self):
+        return "{}".format(self.name)
+
 
 class BookReview(BaseModel):
     book = models.ForeignKey(Book, related_name='book_reviews_set', on_delete=models.CASCADE)
@@ -62,8 +65,6 @@ class BookReview(BaseModel):
     def __str__(self):
         import functools
         reviews_list = self.book.book_reviews_set.values_list('rating')
-        import pdb
-        pdb.set_trace()
         functools.reduce(lambda a, b: a + b, reviews_list)
         return "{}:{}".format(self.user.book.name, self.user)
 
