@@ -7,5 +7,12 @@ from apps.users.serializers import UserSerializer
 def jwt_custom_payload(token, user=None, request=None):
     return {
         'token': token,
-        'user': UserSerializer(user, context={'request': request}).data
+        'user': UserSerializer(
+            user,
+            context={'request': request},
+            remove_fields=[
+                'user_permissions',
+                'password',
+                'groups'
+            ]).data
     }
