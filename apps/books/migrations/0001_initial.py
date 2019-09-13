@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('book', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_read_set', to='books.Book')),
                 ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books_userreadinghistory_created_related', to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books_userreadinghistory_updated_related', to=settings.AUTH_USER_MODEL)),
-                ('user', models.ForeignKey(limit_choices_to=apps.books.models.limit_pub_date_choices, on_delete=django.db.models.deletion.CASCADE, related_name='books_readed', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(limit_choices_to=apps.books.models.limit_user_choices, on_delete=django.db.models.deletion.CASCADE, related_name='books_readed', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'User Reading History',
@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
                 ('book', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_book_session_set', to='books.Book')),
                 ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books_userbooksessions_created_related', to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books_userbooksessions_updated_related', to=settings.AUTH_USER_MODEL)),
-                ('user', models.ForeignKey(limit_choices_to=apps.books.models.limit_pub_date_choices, on_delete=django.db.models.deletion.CASCADE, related_name='user_sessions', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(limit_choices_to=apps.books.models.limit_user_choices, on_delete=django.db.models.deletion.CASCADE, related_name='user_sessions', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'User Reading sessions',
@@ -86,7 +86,7 @@ class Migration(migrations.Migration):
                 ('book', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='book_reviews_set', to='books.Book')),
                 ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books_bookreview_created_related', to=settings.AUTH_USER_MODEL)),
                 ('updated_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books_bookreview_updated_related', to=settings.AUTH_USER_MODEL)),
-                ('user', models.ForeignKey(limit_choices_to=apps.books.models.limit_pub_date_choices, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(limit_choices_to=apps.books.models.limit_user_choices, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Book Reviews',

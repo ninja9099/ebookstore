@@ -1,17 +1,19 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
 from apps.books.constants import BookReadStatus
 from apps.common.base_model import BaseModel
+from apps.users.constants import UserTypes
 
 User = get_user_model()
 
 
-def limit_pub_date_choices():
-    return {'profile__type': 2}
+def limit_user_choices():
+    return {'user_type': UserTypes.Reader}
 
 
 def book_cover_path(instance, filename):
@@ -49,29 +51,29 @@ class Book(BaseModel):
         order_with_respect_to = 'name'
 
     def __str__(self):
-        return "{}".format(self.name)
+        reviews_list = self.book_reviews_set.aggregate(Avg('rating'))
+        print(reviews_list)
+        avg_rating = float(reviews_list['rating__avg'])
+        return "{} --> {}".format(self.name, avg_rating)
 
 
 class BookReview(BaseModel):
     book = models.ForeignKey(Book, related_name='book_reviews_set', on_delete=models.CASCADE)
     review = models.CharField(max_length=2048, blank=True, null=True)
     rating = models.DecimalField(max_digits=2, decimal_places=1)
-    user = models.ForeignKey(User, limit_choices_to=limit_pub_date_choices, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, limit_choices_to=limit_user_choices, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "eb_book_reviews"
-        verbose_name = "Book Reviews"
+        verbose_name = "Book Review"
 
     def __str__(self):
-        import functools
-        reviews_list = self.book.book_reviews_set.values_list('rating')
-        functools.reduce(lambda a, b: a + b, reviews_list)
-        return "{}:{}".format(self.user.book.name, self.user)
+        return "{}:{}".format(self.book.name, self.user)
 
 
 class UserReadingHistory(BaseModel):
     book = models.ForeignKey(Book, related_name='user_read_set', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name="books_readed", limit_choices_to=limit_pub_date_choices, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="books_readed", limit_choices_to=limit_user_choices, on_delete=models.CASCADE)
     page_no = models.IntegerField(default=1)
     status = models.IntegerField(choices=BookReadStatus.get_choices(), default=BookReadStatus.Started)
     total_pages = models.IntegerField()
@@ -90,7 +92,7 @@ class UserReadingHistory(BaseModel):
 
 class UserBookSessions(BaseModel):
     book = models.ForeignKey(Book, related_name='user_book_session_set', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name="user_sessions", limit_choices_to=limit_pub_date_choices,
+    user = models.ForeignKey(User, related_name="user_sessions", limit_choices_to=limit_user_choices,
                              on_delete=models.CASCADE)
 
     class Meta:
