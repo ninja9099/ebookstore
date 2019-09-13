@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 
 class BaseModel(models.Model):
     created_ts = models.DateTimeField(_("Created Date"), auto_now_add=True)

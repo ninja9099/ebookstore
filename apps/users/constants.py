@@ -1,6 +1,7 @@
+from apps.common.constant import GlobalConstant
 
 
-class UserTypes:
+class UserTypes(GlobalConstant):
     Reader = 1
     Author = 2
     Manager = 3
@@ -10,6 +11,3 @@ class UserTypes:
         Author: "Author",
         Manager: "Manager",
     }
-    @classmethod
-    def get_choices(cls):
-        return cls.FieldStr.items()
