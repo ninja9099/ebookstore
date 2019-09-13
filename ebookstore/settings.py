@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import datetime
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -158,6 +158,18 @@ LANGUAGES = (
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale/'),
 )
+
+# JWT settings
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+    'apps.users.views.jwt_custom_payload',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=30),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'Token',
+
+}
 
 try:
     from .local_settings import *
