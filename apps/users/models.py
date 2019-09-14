@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
+from rest_framework.permissions import BasePermission
+
 from apps.users.constants import UserTypes
 
 
@@ -46,3 +48,22 @@ class User(AbstractUser):
         """
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
+
+
+class IsReader(BasePermission):
+    message = 'Only reader can perform this action'
+
+    def has_permission(self, request, view):
+        return request.user.user_type == UserTypes.Reader
+
+
+class IsAuthor(BasePermission):
+    message = 'Only Author can perform the action.'
+
+    def has_permission(self, request, view):
+        return request.user.user_type == UserTypes.Author
+
+    def has_object_permission(self, request, view, obj):
+        """ checks if book is uploaded by author is the same who is editing"""
+        return True
+

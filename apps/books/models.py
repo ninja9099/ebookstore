@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
 from django.db.models import Avg
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
@@ -42,7 +41,9 @@ class Book(BaseModel):
         related_name='books_written_set',
         related_query_name='book_writers',
     )
+    published_date = models.DateField()
     total_pages = models.IntegerField(blank=True, null=True)
+    publisher = models.CharField(max_length=1024)
 
     class Meta:
         db_table = "eb_book"

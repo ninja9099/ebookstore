@@ -6,6 +6,7 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(read_only=True)
 
     class Meta:
         model = User
@@ -19,3 +20,9 @@ class UserSerializer(serializers.ModelSerializer):
         if remove_fields:
             for field_name in remove_fields:
                 self.fields.pop(field_name)
+
+
+class UserReadOnlySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id","username","first_name","last_name","about_me", "user_type", "avatar")

@@ -40,6 +40,7 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = [
+    'apps.common',
     'apps.users',
     'apps.books'
 ]
@@ -126,11 +127,12 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# LOGIN_URL = 'login'
+
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'server', 'static'),
+    os.path.join(BASE_DIR, 'ebookstore', 'static'),
 )
 
 REST_FRAMEWORK = {
@@ -139,9 +141,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
-    'EXCEPTION_HANDLER': 'apps.common.base_exceptions.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'apps.common.base_exception.custom_exception_handler',
     'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S",
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 }
