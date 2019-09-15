@@ -67,6 +67,8 @@ class UserViewset(ListMixin,CreateMixin, UpdateMixin, viewsets.GenericViewSet):
         request_data = request.data.copy()
         if 'email' in request_data.keys():
             request_data.pop('email')
+        if 'username' in request_data.keys():
+            request_data.pop('username')
         if instance.id != request.user.pk:
             raise ValidationError(_('Not allowed to update other users'))
         serializer = self.get_serializer(instance, data=request_data, partial=True)

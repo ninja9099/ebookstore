@@ -4,7 +4,6 @@ from rest_framework.exceptions import ValidationError
 
 User = get_user_model()
 
-
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(read_only=True)
 
@@ -23,9 +22,19 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserReadOnlySerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
-        fields = ("id","username","email", "first_name","last_name","about_me", "user_type", "avatar")
+        fields = (
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "about_me",
+            "user_type",
+            "avatar"
+        )
 
 
 class PasswordSerializer(serializers.Serializer):
