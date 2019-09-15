@@ -17,10 +17,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from apps.users.views import index
+from apps.users.views import index, verify_email
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='home'),
+    path('verify_email/', verify_email, name='verify-email'),
     path('api/v1/', include('apps.users.urls')),
     path('api/v1/', include('apps.books.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

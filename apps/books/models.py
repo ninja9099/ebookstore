@@ -41,6 +41,7 @@ class Book(BaseModel):
         related_name='books_written_set',
         related_query_name='book_writers',
     )
+
     published_date = models.DateField()
     total_pages = models.IntegerField(blank=True, null=True)
     publisher = models.CharField(max_length=1024)

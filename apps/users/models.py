@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
@@ -68,3 +70,15 @@ class IsAuthor(BasePermission):
         """ checks if book is uploaded by author is the same who is editing"""
         return True
 
+
+class EmailVerificationTokens(models.Model):
+    key = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = 'eb_email_tokens'
+        verbose_name_plural = 'Email verification Tokens'
+
+    def __str__(self):
+        return str(self.user)
