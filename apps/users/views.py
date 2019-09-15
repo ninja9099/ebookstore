@@ -3,11 +3,13 @@ from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 # Create your views here.
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
+from apps.users.permissions import IsAdminOrIsSelf
 from apps.users.serializers import UserSerializer, UserReadOnlySerializer, PasswordSerializer
 from rest_framework import viewsets, filters as search_filters, status
 from rest_framework.mixins import (
@@ -44,6 +46,20 @@ class UserViewset(ListMixin,CreateMixin, UpdateMixin, viewsets.GenericViewSet):
     search_fields = ('first_name', 'last_name', 'username', 'email', 'about_me')
     pagination_class = LimitOffsetPagination
 
+
+    @action(detail=True, methods=['put'], permission_classes=[IsAdminOrIsSelf])
+    def set_password(self, request, pk=None):
+        user = self.get_object()
+        serializer = PasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            user.set_password(serializer.data['password1'])
+            user.save()
+            return Response({'message': _('Password has been set successfully')})
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
     def get_permissions(self):
         """
         Instantiates and returns the list of permissions that this view requires.
@@ -53,8 +69,9 @@ class UserViewset(ListMixin,CreateMixin, UpdateMixin, viewsets.GenericViewSet):
         if self.action == 'create':
             permission_classes = [AllowAny]
         else:
-            permission_classes = [IsAdminUser | IsAuthenticated]
+            permission_classes = [IsAdminUser | IsAuthenticated| IsAdminOrIsSelf]
         return [permission() for permission in permission_classes]
+
 
 
     def get_serializer_class(self):
@@ -76,6 +93,7 @@ class UserViewset(ListMixin,CreateMixin, UpdateMixin, viewsets.GenericViewSet):
         self.perform_update(serializer)
         return Response(serializer.data)
 
+
     def create(self, request, *args, **kwargs):
         self.serializer_class = UserSerializer
         serializer = self.get_serializer(data=request.data)
@@ -84,6 +102,7 @@ class UserViewset(ListMixin,CreateMixin, UpdateMixin, viewsets.GenericViewSet):
         if password_serializer.is_valid(raise_exception=True):
             user = self.perform_create(serializer)
             user.set_password(password_serializer.data['password1'])
+
             user.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

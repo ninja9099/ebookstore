@@ -23,6 +23,7 @@ class User(AbstractUser):
 
     REQUIRED_FIELDS = ['user_type', 'email']
 
+
     @property
     def get_avatar(self):
         """

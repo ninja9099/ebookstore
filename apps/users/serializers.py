@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -20,6 +21,10 @@ class UserSerializer(serializers.ModelSerializer):
             for field_name in remove_fields:
                 self.fields.pop(field_name)
 
+    def validate_email(self, attrs):
+        if User.objects.filter(email=attrs, is_active=True).exists():
+            raise ValidationError(_('Email is already exist'))
+        return attrs
 
 class UserReadOnlySerializer(serializers.ModelSerializer):
 
@@ -36,6 +41,11 @@ class UserReadOnlySerializer(serializers.ModelSerializer):
             "avatar"
         )
 
+    def validate_email(self, attrs):
+        if User.objects.filter(email=attrs, is_active=True).exists():
+            raise ValidationError(_('Email is already exist'))
+        return attrs
+
 
 class PasswordSerializer(serializers.Serializer):
     password1 = serializers.CharField(required=True)
@@ -45,5 +55,5 @@ class PasswordSerializer(serializers.Serializer):
         p1 = attrs.get('password1')
         p2 = attrs.get('password2')
         if p1!=p2:
-            raise ValidationError({'password': 'Passwords Do not match'})
+            raise ValidationError({'password': _('Passwords Do not match')})
         return attrs
