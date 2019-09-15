@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
-from apps.common.base_serializers import BaseSerializer
 User = get_user_model()
 
 
@@ -25,4 +25,16 @@ class UserSerializer(serializers.ModelSerializer):
 class UserReadOnlySerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id","username","first_name","last_name","about_me", "user_type", "avatar")
+        fields = ("id","username","email", "first_name","last_name","about_me", "user_type", "avatar")
+
+
+class PasswordSerializer(serializers.Serializer):
+    password1 = serializers.CharField(required=True)
+    password2 = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        p1 = attrs.get('password1')
+        p2 = attrs.get('password2')
+        if p1!=p2:
+            raise ValidationError({'password': 'Passwords Do not match'})
+        return attrs
