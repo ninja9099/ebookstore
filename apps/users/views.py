@@ -1,8 +1,10 @@
 import logging
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -44,6 +46,11 @@ def jwt_custom_payload(token, user=None, request=None):
 
 def index(request):
     return render(request, 'index.html')
+
+def user_logout(request):
+    # logout method for logging out user
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))
 
 
 class UserViewset(ListMixin,CreateMixin, UpdateMixin, viewsets.GenericViewSet):
