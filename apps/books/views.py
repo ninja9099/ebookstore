@@ -1,3 +1,51 @@
-from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, filters as search_filters, status
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.mixins import (
+ListModelMixin as ListMixin,
+UpdateModelMixin as UpdateMixin,
+RetrieveModelMixin as RetrieveMixin,
+CreateModelMixin as CreateMixin
+)
+from rest_framework.response import Response
 
-# Create your views here.
+from apps.books.models import Book, Category
+from apps.books.serializers import BookSerializer, CategorySerializer
+from apps.users.permissions import IsAdminOrIsSelf, IsAdminOrOwner
+
+
+class CategoryViewSet(ListMixin, CreateMixin, UpdateMixin, viewsets.GenericViewSet):
+
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    pagination_class = LimitOffsetPagination
+    permission_classes = (IsAdminUser,)
+    filter_backends = (search_filters.SearchFilter, DjangoFilterBackend,)
+    search_fields = ('name',)
+
+
+class BookViewSet(ListMixin, CreateMixin, UpdateMixin, viewsets.GenericViewSet):
+
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    pagination_class = LimitOffsetPagination
+    permission_classes = (IsAdminUser | IsAuthenticatedOrReadOnly,)
+    filter_backends = (search_filters.SearchFilter, DjangoFilterBackend,)
+    search_fields = ('name', 'author__username', 'category__name', 'publisher')
+
+
+    def get_permissions(self):
+        permission_classes = IsAuthenticatedOrReadOnly
+        if self.action == 'list':
+            permission_classes = [IsAuthenticatedOrReadOnly, ]
+        if self.action == 'update':
+            permission_classes =  [IsAdminOrOwner, ]
+        return [permission() for permission in permission_classes]
+
+    def update(self, request, *args, **kwargs):
+        obj = self.get_object()
+        serializer = BookSerializer(instance=obj, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)

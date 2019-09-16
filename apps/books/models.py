@@ -15,6 +15,10 @@ def limit_user_choices():
     return {'user_type': UserTypes.Reader}
 
 
+def get_dir_path(instance, filename):
+    return "books/{}_{}".format(instance.name, filename)
+
+
 def book_cover_path(instance, filename):
     """
     method to create separate folder for each user
@@ -28,7 +32,10 @@ def book_cover_path(instance, filename):
 class Category(models.Model):
     name = models.CharField(_("Category"), max_length=255)
     # for multi-level category structure support (self reference)
-    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='child_set', null=True, blank=True)
+
+    def __str__(self):
+        return "{}".format(self.name)
 
 
 class Book(BaseModel):
@@ -45,6 +52,7 @@ class Book(BaseModel):
     published_date = models.DateField()
     total_pages = models.IntegerField(blank=True, null=True)
     publisher = models.CharField(max_length=1024)
+    file = models.FileField(upload_to=get_dir_path)
 
     class Meta:
         db_table = "eb_book"
@@ -52,11 +60,17 @@ class Book(BaseModel):
         # to order with alphabetically
         order_with_respect_to = 'name'
 
-    def __str__(self):
+    @property
+    def get_rating(self):
         reviews_list = self.book_reviews_set.aggregate(Avg('rating'))
-        print(reviews_list)
-        avg_rating = float(reviews_list['rating__avg'])
-        return "{} --> {}".format(self.name, avg_rating)
+        if reviews_list['rating__avg']:
+            avg_rating = float(reviews_list['rating__avg'])
+        else:
+            avg_rating = 0
+        return avg_rating
+
+    def __str__(self):
+        return "{}".format(self.name)
 
 
 class BookReview(BaseModel):
@@ -86,7 +100,7 @@ class UserReadingHistory(BaseModel):
         verbose_name = "User Reading History"
 
     def __str__(self):
-        return "{}:{}".format(self.book.name, self.user.username)
+        return "{}:{}".format(self.book.name, self.user)
 
     def __repr__(self):
         return "<{} for {}, {}>".format(self.__class__.__name__, self.book.name, self.user)
@@ -102,7 +116,7 @@ class UserBookSessions(BaseModel):
         verbose_name = "User Reading sessions"
 
     def __str__(self):
-        return "{}:{}".format(self.user.username, self.book.name)
+        return "{}:{}".format(self.user, self.book.name)
 
     def __repr__(self):
         return "<{} for {}, {}>".format(self.__class__.__name__, self.book.name, self.user)

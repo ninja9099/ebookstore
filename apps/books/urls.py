@@ -1,11 +1,9 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
+from apps.books.views import BookViewSet, CategoryViewSet
 
-from apps.users.views import UserViewset
-
-urlpatterns = [
-]
 
 router = DefaultRouter()
-router.register(r'users', UserViewset, basename='user')
-urlpatterns += router.urls
+router.register('category', CategoryViewSet, basename='category')
+router.register('books', BookViewSet, basename='book')
+urlpatterns = router.urls
