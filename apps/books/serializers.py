@@ -12,11 +12,11 @@ class CategorySerializer(BaseSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name','parent')
-
-    def get_fields(self):
-        fields = super(CategorySerializer, self).get_fields()
-        fields['child_set'] = CategorySerializer(many=True)
-        return fields
+    # removed due to schema generation going infinite
+    # def get_fields(self):
+    #     fields = super(CategorySerializer, self).get_fields()
+    #     fields['child_set'] = CategorySerializer(many=True)
+    #     return fields
 
 class BookSerializer(BaseSerializer):
     rating = serializers.CharField(source='get_rating', read_only=True)

@@ -26,12 +26,6 @@ class CategoryViewSet(ListMixin, RetrieveMixin, CreateMixin, UpdateMixin, viewse
     filter_backends = (search_filters.SearchFilter, DjangoFilterBackend,)
     search_fields = ('name', 'slug')
 
-    def get_queryset(self):
-        queryset = self.queryset
-        if self.action == 'list':
-            queryset =queryset.filter(parent=None)
-        return queryset
-
 
 class BookViewSet(ListMixin, RetrieveMixin,DeleteMixin, CreateMixin, UpdateMixin, viewsets.GenericViewSet):
 
