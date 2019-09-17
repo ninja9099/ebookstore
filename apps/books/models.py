@@ -50,13 +50,12 @@ class Book(BaseModel):
     name = models.CharField(_("Book Title"), max_length=255)
     cover = models.ImageField(upload_to=book_cover_path)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
-    # author can be multiple
-    author = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        related_name='books_written_set',
-        related_query_name='book_writers',
-    )
 
+    # author can be multiple but as of now only primary author can be linked
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='books_written_set',on_delete=models.CASCADE
+    )
     published_date = models.DateField()
     total_pages = models.IntegerField(blank=True, null=True)
     publisher = models.CharField(max_length=1024)

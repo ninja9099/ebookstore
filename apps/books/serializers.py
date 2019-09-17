@@ -6,6 +6,7 @@ from rest_framework.exceptions import ValidationError
 
 from apps.books.models import Book, Category
 from apps.common.base_serializers import BaseSerializer
+from apps.users.serializers import UserSerializer
 
 User = get_user_model()
 
@@ -23,7 +24,7 @@ class CategorySerializer(BaseSerializer):
 
 class BookSerializer(BaseSerializer):
     rating = serializers.CharField(source='get_rating', read_only=True)
-
+    author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     class Meta:
         model = Book
         fields = (
@@ -41,8 +42,3 @@ class BookSerializer(BaseSerializer):
             "created_by",
             "category"
         )
-
-    # handle many to many relation explicitly
-    def create(self, validated_data):
-        instance = super(BookSerializer, self).create(validated_data)
-        return instance

@@ -34,6 +34,7 @@ class BookViewSet(ListMixin, RetrieveMixin,DeleteMixin, CreateMixin, UpdateMixin
     pagination_class = LimitOffsetPagination
     permission_classes = (IsAdminUser | IsAuthenticatedOrReadOnly,)
     filter_backends = (search_filters.SearchFilter, DjangoFilterBackend,)
+    filterset_fields = ['category', 'author', 'published_date', 'slug']
     search_fields = ('name', 'author__username', 'category__name', 'publisher')
 
 

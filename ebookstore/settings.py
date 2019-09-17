@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-import datetime
 import os
+import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # for per request language translation in api responses
+    'django.middleware.locale.LocaleMiddleware'
 ]
 
 ROOT_URLCONF = 'ebookstore.urls'
@@ -109,6 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+# More language codes can be found here
+# https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -128,7 +133,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = (
@@ -147,14 +151,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 }
 
-USE_I18N = True
-
 ugettext = lambda s: s
 
 LANGUAGES = (
     ('en', ugettext('English')),
     ('hi', ugettext('Hindi')),
-    ('te', ugettext('Telugu')),
+    ('gu', ugettext('Gujarati')),
 )
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale/'),
