@@ -41,3 +41,8 @@ class BookSerializer(BaseSerializer):
             "created_by",
             "category"
         )
+
+    # handle many to many relation explicitly
+    def create(self, validated_data):
+        instance = super(BookSerializer, self).create(validated_data)
+        return instance

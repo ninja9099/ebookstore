@@ -1,6 +1,9 @@
+import random
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import Avg
+from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 
@@ -33,6 +36,11 @@ class Category(models.Model):
     name = models.CharField(_("Category"), max_length=255)
     # for multi-level category structure support (self reference)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='child_set', null=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
 
     def __str__(self):
         return "{}".format(self.name)
@@ -53,6 +61,8 @@ class Book(BaseModel):
     total_pages = models.IntegerField(blank=True, null=True)
     publisher = models.CharField(max_length=1024)
     file = models.FileField(upload_to=get_dir_path)
+    slug = models.SlugField(unique=True, blank=True)
+
 
     class Meta:
         db_table = "eb_book"
@@ -72,6 +82,10 @@ class Book(BaseModel):
     def __str__(self):
         return "{}".format(self.name)
 
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Book, self).save(*args, **kwargs)
 
 class BookReview(BaseModel):
     book = models.ForeignKey(Book, related_name='book_reviews_set', on_delete=models.CASCADE)

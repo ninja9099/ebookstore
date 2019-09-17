@@ -1,0 +1,176 @@
+[
+{
+  "model": "books.category",
+  "pk": 1,
+  "fields": {
+    "name": "Fiction",
+    "parent": null,
+    "slug": "fiction"
+  }
+},
+{
+  "model": "books.category",
+  "pk": 2,
+  "fields": {
+    "name": "Non-fiction",
+    "parent": null,
+    "slug": "non-fiction"
+  }
+},
+{
+  "model": "books.category",
+  "pk": 3,
+  "fields": {
+    "name": "Action and adventure",
+    "parent": 1,
+    "slug": "action-and-adventure"
+  }
+},
+{
+  "model": "books.category",
+  "pk": 4,
+  "fields": {
+    "name": "Art",
+    "parent": 2,
+    "slug": "art"
+  }
+},
+  {
+  "model": "books.category",
+  "pk": 5,
+  "fields": {
+    "name": "Satire",
+    "parent": 2,
+    "slug": "satire"
+  }
+},
+{
+  "model": "books.category",
+  "pk": 6,
+  "fields": {
+    "name": "Alternate history",
+    "parent": 1,
+    "slug": "alternate-history"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 7,
+  "fields": {
+    "name": "Anthology",
+    "parent": 1,
+    "slug": "anthology"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 8,
+  "fields": {
+    "name": "Chick lit",
+    "parent": 1,
+    "slug": "chick-lit"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 9,
+  "fields": {
+    "name": "Children's",
+    "parent": 1,
+    "slug": "Children"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 10,
+  "fields": {
+    "name": "Comic book",
+    "parent": 1,
+    "slug": "comic-book"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 11,
+  "fields": {
+    "name": "Coming-of-age",
+    "parent": 1,
+    "slug": "coming-of-age"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 12,
+  "fields": {
+    "name": "Crime",
+    "parent": 1,
+    "slug": "Crime"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 13,
+  "fields": {
+    "name": "drama",
+    "parent": 1,
+    "slug": "drama"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 14,
+  "fields": {
+    "name": "Fairytale",
+    "parent": 1,
+    "slug": "Fairytale"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 15,
+  "fields": {
+    "name": "Fantasy",
+    "parent": 1,
+    "slug": "Fantasy"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 16,
+  "fields": {
+    "name": "Graphic novel",
+    "parent": 1,
+    "slug": "graphic-novel"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 17,
+  "fields": {
+    "name": "Historical fiction",
+    "parent": 1,
+    "slug": "historical-fiction"
+  }
+}
+  ,
+{
+  "model": "books.category",
+  "pk": 18,
+  "fields": {
+    "name": "Horror",
+    "parent": 1,
+    "slug": "horror"
+  }
+}
+]

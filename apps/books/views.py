@@ -6,16 +6,18 @@ from rest_framework.mixins import (
 ListModelMixin as ListMixin,
 UpdateModelMixin as UpdateMixin,
 RetrieveModelMixin as RetrieveMixin,
-CreateModelMixin as CreateMixin
+CreateModelMixin as CreateMixin,
+DestroyModelMixin as DeleteMixin
+
 )
 from rest_framework.response import Response
 
 from apps.books.models import Book, Category
 from apps.books.serializers import BookSerializer, CategorySerializer
-from apps.users.permissions import IsAdminOrIsSelf, IsAdminOrOwner
+from apps.users.permissions import IsAdminOrOwner
 
 
-class CategoryViewSet(ListMixin, CreateMixin, UpdateMixin, viewsets.GenericViewSet):
+class CategoryViewSet(ListMixin, RetrieveMixin, CreateMixin, UpdateMixin, viewsets.GenericViewSet):
 
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -25,7 +27,7 @@ class CategoryViewSet(ListMixin, CreateMixin, UpdateMixin, viewsets.GenericViewS
     search_fields = ('name',)
 
 
-class BookViewSet(ListMixin, CreateMixin, UpdateMixin, viewsets.GenericViewSet):
+class BookViewSet(ListMixin, RetrieveMixin,DeleteMixin, CreateMixin, UpdateMixin, viewsets.GenericViewSet):
 
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -36,7 +38,7 @@ class BookViewSet(ListMixin, CreateMixin, UpdateMixin, viewsets.GenericViewSet):
 
 
     def get_permissions(self):
-        permission_classes = IsAuthenticatedOrReadOnly
+        permission_classes = [IsAuthenticatedOrReadOnly,]
         if self.action == 'list':
             permission_classes = [IsAuthenticatedOrReadOnly, ]
         if self.action == 'update':
