@@ -35,7 +35,7 @@
     "slug": "art"
   }
 },
-  {
+{
   "model": "books.category",
   "pk": 5,
   "fields": {
@@ -52,8 +52,7 @@
     "parent": 1,
     "slug": "alternate-history"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 7,
@@ -62,8 +61,7 @@
     "parent": 1,
     "slug": "anthology"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 8,
@@ -72,18 +70,16 @@
     "parent": 1,
     "slug": "chick-lit"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 9,
   "fields": {
     "name": "Children's",
     "parent": 1,
-    "slug": "Children"
+    "slug": "childrens"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 10,
@@ -92,8 +88,7 @@
     "parent": 1,
     "slug": "comic-book"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 11,
@@ -102,8 +97,7 @@
     "parent": 1,
     "slug": "coming-of-age"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 12,
@@ -112,8 +106,7 @@
     "parent": 1,
     "slug": "Crime"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 13,
@@ -122,8 +115,7 @@
     "parent": 1,
     "slug": "drama"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 14,
@@ -132,8 +124,7 @@
     "parent": 1,
     "slug": "Fairytale"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 15,
@@ -142,8 +133,7 @@
     "parent": 1,
     "slug": "Fantasy"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 16,
@@ -152,8 +142,7 @@
     "parent": 1,
     "slug": "graphic-novel"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 17,
@@ -162,8 +151,7 @@
     "parent": 1,
     "slug": "historical-fiction"
   }
-}
-  ,
+},
 {
   "model": "books.category",
   "pk": 18,

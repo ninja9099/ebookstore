@@ -1,0 +1,92 @@
+[
+{
+  "model": "books.book",
+  "pk": 1,
+  "fields": {
+    "created_ts": "2019-09-17T17:12:36.989Z",
+    "updated_ts": "2019-09-17T17:12:36.989Z",
+    "created_by": 1,
+    "updated_by": 1,
+    "name": "The  Notebook",
+    "cover": "book_cover_None/download_wVgkZP2.jpeg",
+    "category": 4,
+    "published_date": "2019-09-17",
+    "total_pages": 400,
+    "publisher": "The Alpha Publishing",
+    "file": "books/The__Notebook_pankaj_resume_latest.pdf",
+    "slug": "the-notebook",
+    "_order": 0,
+    "author": [
+      1,
+      30
+    ]
+  }
+},
+{
+  "model": "books.book",
+  "pk": 2,
+  "fields": {
+    "created_ts": "2019-09-17T17:12:36.989Z",
+    "updated_ts": "2019-09-17T17:12:36.989Z",
+    "created_by": 1,
+    "updated_by": 1,
+    "name": "The  Notebook 1",
+    "cover": "book_cover_None/download_wVgkZP2.jpeg",
+    "category": 4,
+    "published_date": "2019-09-17",
+    "total_pages": 400,
+    "publisher": "The Alpha Publishing",
+    "file": "books/The__Notebook_pankaj_resume_latest.pdf",
+    "slug": "the-notebook-2",
+    "_order": 0,
+    "author": [
+      1,
+      30
+    ]
+  }
+},
+  {
+    "model": "books.book",
+    "pk": 3,
+    "fields": {
+      "created_ts": "2019-09-17T17:12:36.989Z",
+      "updated_ts": "2019-09-17T17:12:36.989Z",
+      "created_by": 1,
+      "updated_by": 1,
+      "name": "The  Notebook 2",
+      "cover": "book_cover_None/download_wVgkZP2.jpeg",
+      "category": 4,
+      "published_date": "2019-09-17",
+      "total_pages": 400,
+      "publisher": "The Alpha Publishing",
+      "file": "books/The__Notebook_pankaj_resume_latest.pdf",
+      "slug": "the-notebook-3",
+      "_order": 0,
+      "author": [
+        30
+      ]
+    }
+  },
+  {
+  "model": "books.book",
+  "pk": 4,
+  "fields": {
+    "created_ts": "2019-09-17T17:12:36.989Z",
+    "updated_ts": "2019-09-17T17:12:36.989Z",
+    "created_by": 1,
+    "updated_by": 1,
+    "name": "The  Notebook 3",
+    "cover": "book_cover_None/download_wVgkZP2.jpeg",
+    "category": 4,
+    "published_date": "2019-09-17",
+    "total_pages": 400,
+    "publisher": "The Alpha Publishing",
+    "file": "books/The__Notebook_pankaj_resume_latest.pdf",
+    "slug": "the-notebook-4",
+    "_order": 0,
+    "author": [
+      1
+    ]
+  }
+}
+]
