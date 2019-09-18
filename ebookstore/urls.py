@@ -29,7 +29,7 @@ urlpatterns = [
     path('verify_email/', verify_email, name='verify-email'),
     path('api/v1/', include('apps.users.urls')),
     path('api/v1/', include('apps.books.urls')),
-    path('openapi', get_schema_view(
+    path('ebook-api', get_schema_view(
         title="E-bookStore",
         description="API for all things",
         version="1.0.0",
