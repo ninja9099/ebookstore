@@ -95,7 +95,7 @@ class BookReview(BaseModel):
     class Meta:
         db_table = "eb_book_reviews"
         verbose_name = "Book Review"
-
+        unique_together = ('book', 'user')
     def __str__(self):
         return "{}:{}".format(self.book.name, self.user)
 

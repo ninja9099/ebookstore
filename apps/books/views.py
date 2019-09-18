@@ -1,10 +1,11 @@
 import logging
 
+from django.utils.translation import ugettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, filters as search_filters, status, pagination
+from rest_framework import viewsets, filters as search_filters, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.mixins import (
 ListModelMixin as ListMixin,
 UpdateModelMixin as UpdateMixin,
@@ -61,7 +62,7 @@ class BookViewSet(ListMixin, RetrieveMixin,DeleteMixin, CreateMixin, UpdateMixin
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticatedOrReadOnly])
-def book_review(request, book_id):
+def book_review(request, book_id=None):
     try:
         if request.method =='GET':
             paginator = LimitOffsetPagination()
@@ -74,6 +75,14 @@ def book_review(request, book_id):
                 return paginator.get_paginated_response(serializer.data)
             return Response([],status=status.HTTP_200_OK)
         logger.info('User {} request to update the review of book'.format(request.user))
+        request_data = request.data.copy()
+        serializer = BookReviewSerializer(data=request_data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        return Response(
+            {'message': _("Response recorded successfully")},
+            status=status.HTTP_201_CREATED
+        )
     except Book.DoesNotExist:
         logger.critical('Book with request id: {} not Found'.format(book_id))
         return Response(

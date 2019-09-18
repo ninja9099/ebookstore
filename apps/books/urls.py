@@ -6,6 +6,7 @@ router = DefaultRouter()
 router.register('category', CategoryViewSet, basename='category')
 router.register('books', BookViewSet, basename='book')
 urlpatterns = [
-    path('review/<int:book_id>', book_review, name='book-review')
+    path('book/<int:book_id>/review', book_review, name='book-review'),
+    path('book/<int:book_id>/review', book_review, name='book-review'),
 ]
 urlpatterns += router.urls
