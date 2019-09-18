@@ -1,7 +1,10 @@
+import logging
+
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, filters as search_filters, status
+from rest_framework import viewsets, filters as search_filters, status, pagination
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.mixins import (
 ListModelMixin as ListMixin,
 UpdateModelMixin as UpdateMixin,
@@ -12,11 +15,11 @@ DestroyModelMixin as DeleteMixin
 )
 from rest_framework.response import Response
 
-from apps.books.models import Book, Category
-from apps.books.serializers import BookSerializer, CategorySerializer
+from apps.books.models import Book, Category, BookReview
+from apps.books.serializers import BookSerializer, CategorySerializer, BookReviewSerializer
 from apps.users.permissions import IsAdminOrOwner
 
-
+logger = logging.getLogger('api')
 class CategoryViewSet(ListMixin, RetrieveMixin, CreateMixin, UpdateMixin, viewsets.GenericViewSet):
 
     queryset = Category.objects.all()
@@ -52,3 +55,28 @@ class BookViewSet(ListMixin, RetrieveMixin,DeleteMixin, CreateMixin, UpdateMixin
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
+def book_review(request, book_id):
+    try:
+        if request.method =='GET':
+            paginator = LimitOffsetPagination()
+            book = Book.objects.get(pk=book_id)
+            logger.info('Request  to get reviews of book {}'.format(book.name))
+            queryset = BookReview.objects.filter(book__id=book_id).order_by('-id') or None
+            if queryset:
+                res_queryset = paginator.paginate_queryset(queryset, request)
+                serializer = BookReviewSerializer(instance=res_queryset, many=True)
+                return paginator.get_paginated_response(serializer.data)
+            return Response([],status=status.HTTP_200_OK)
+        logger.info('User {} request to update the review of book'.format(request.user))
+    except Book.DoesNotExist:
+        logger.critical('Book with request id: {} not Found'.format(book_id))
+        return Response(
+            {'message': _("Book Not Found")},
+            status=status.HTTP_404_NOT_FOUND
+        )

@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from apps.books.models import Book, Category
+from apps.books.models import Book, Category, BookReview
 from apps.common.base_serializers import BaseSerializer
 
 
@@ -38,3 +38,10 @@ class BookSerializer(BaseSerializer):
             "created_by",
             "category"
         )
+
+
+class BookReviewSerializer(BaseSerializer):
+
+    class Meta:
+        model = BookReview
+        fields = ('__all__')

@@ -149,6 +149,7 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'apps.common.base_exception.custom_exception_handler',
     'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S",
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': '10'
 }
 
 ugettext = lambda s: s
